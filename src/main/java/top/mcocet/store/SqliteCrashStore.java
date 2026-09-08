@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,11 +55,11 @@ public class SqliteCrashStore implements CrashStore {
     @Override
     public void init() throws Exception {
         Class.forName("org.sqlite.JDBC");
+        // DDL 必须按顺序执行:先建表,再建索引(prepare CREATE INDEX 时表须已存在)
         try (Connection conn = connect();
-             PreparedStatement table = conn.prepareStatement(CREATE_TABLE);
-             PreparedStatement index = conn.prepareStatement(CREATE_INDEX)) {
-            table.executeUpdate();
-            index.executeUpdate();
+             Statement st = conn.createStatement()) {
+            st.executeUpdate(CREATE_TABLE);
+            st.executeUpdate(CREATE_INDEX);
         }
     }
 
