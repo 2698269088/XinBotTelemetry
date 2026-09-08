@@ -1,0 +1,77 @@
+# Xinbot 遥测服务端语言文件:简体中文(默认)
+# 格式与 Xinbot 核心 .lang 一致:key=value,# 注释,UTF-8 编码。
+
+bot.unknown_server=(未连接)
+
+# ---- 配置 ----
+config.bad_arg=无法识别的参数(仅支持 --help 与 --config=路径): %s
+config.generated=未找到配置文件,已生成默认配置 %s,修改后请重启生效
+config.load_failed=配置加载失败: %s
+config.db_type_invalid=db.type 仅支持 sqlite 或 mysql,当前: %s
+config.lang_invalid=lang 仅支持 zh_cn、zh_tw 或 en_us,当前: %s
+config.port_negative=udp.port / http.port 不能为负数(0 表示禁用)
+config.bad_number=%s 不是合法整数: %s
+
+usage.main=用法: java -jar XinBotTelemetry.jar [--config=配置文件路径]
+usage.opt=--config=路径   指定配置文件(默认 ./config.yml,首次启动自动生成)
+usage.note=所有配置项均通过配置文件设置(UTF-8 YAML,支持 # 注释),修改后重启生效:
+usage.items_db=lang=zh_cn|zh_tw|en_us(语言) | db.type=sqlite|mysql(存储类型) | db.file=telemetry.db | db.url、db.user、db.password(MySQL)
+usage.items_net=udp.port=9000(UDP 端口,0 禁用) | http.port=8080(HTTP 端口,0 禁用) | online.timeout=600000(心跳超时毫秒)
+usage.client=客户端 config.conf 对应配置:telemetry.ip 填本服务端 IP;mode="udp" 时 port 用 udp.port,mode="http" 时 port 用 http.port
+
+# ---- 启动与停机 ----
+main.store_ready=存储类型: %s,在线超时: %s 秒,启动参数: %s
+main.ready=XinBot 遥测服务端已就绪,按 Ctrl+C 停止
+main.stopping=正在停止遥测服务端...
+main.store_init_failed=数据库初始化失败,请检查存储配置: %s
+main.no_listener=UDP 与 HTTP 端口均为 0,没有任何监听入口,退出
+
+# ---- UDP / HTTP ----
+udp.started=UDP 遥测服务已启动,监听 0.0.0.0:%s(所有网卡)
+udp.socket_error=UDP 套接字异常
+udp.recv_error=UDP 接收处理异常
+http.started=HTTP 服务已启动,监听 0.0.0.0:%s(所有网卡),监控页面: http://<本机IP>:%s/
+api.error=API 处理失败
+
+# ---- 遥测处理 ----
+handler.drop=丢弃无法解密的遥测数据(来自 %s): %s
+handler.crash_saved=已保存崩溃日志: %s @%s %s
+handler.crash_save_failed=崩溃日志入库失败: %s
+
+# ---- 协议解码 ----
+dec.packet_short=数据包过短: %s 字节
+dec.bad_magic=魔数不匹配,非 Xinbot 遥测数据
+dec.bad_version=不支持的协议版本: %s
+dec.unknown_type=未知消息类型: %s
+dec.decrypt_failed=解密失败(密钥不符或数据被篡改)
+dec.bad_json=遥测负载不是合法 JSON
+
+# ---- 监控页面 ----
+page.title=XinBot 遥测监控
+page.sub_load=加载中...
+page.refresh=刷新
+page.card_online=在线 BOT
+page.card_offline=离线 BOT
+page.card_crashed=已崩溃
+page.card_logs=累计崩溃日志
+page.bot_list=BOT 列表
+page.th_server=服务器
+page.th_status=状态
+page.th_state=阶段
+page.th_players=玩家
+page.th_version=版本
+page.th_source=来源 IP
+page.th_last=最后心跳
+page.th_uptime=运行时长
+page.recent_crashes=最近崩溃日志
+page.th_time=时间
+page.th_exception=异常
+page.empty_bots=暂无数据
+page.empty_crashes=暂无崩溃记录
+page.st_online=在线
+page.st_offline=离线
+page.st_crashed=已崩溃
+page.meta_rule=在线判定:心跳超过 {timeout} 分钟未见即离线,已累计入库 {total} 条崩溃,最后刷新 {time}
+page.unit_day=天
+page.unit_hour=时
+page.unit_minute=分

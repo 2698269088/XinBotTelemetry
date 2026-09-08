@@ -1,0 +1,77 @@
+# Xinbot telemetry server language file: en_us (base fallback language)
+# Format matches Xinbot core .lang files: key=value, '#' comments, UTF-8.
+
+bot.unknown_server=(not connected)
+
+# ---- config ----
+config.bad_arg=Unrecognized argument (only --help and --config=PATH are supported): %s
+config.generated=Config file not found, generated default config at %s; restart to apply
+config.load_failed=Failed to load config: %s
+config.db_type_invalid=db.type must be sqlite or mysql, got: %s
+config.lang_invalid=lang must be zh_cn, zh_tw or en_us, got: %s
+config.port_negative=udp.port / http.port must not be negative (0 disables)
+config.bad_number=%s is not a valid integer: %s
+
+usage.main=Usage: java -jar XinBotTelemetry.jar [--config=config-file-path]
+usage.opt=--config=PATH   Use a custom config file (default ./config.yml, auto-generated on first run)
+usage.note=All settings live in the config file (UTF-8 YAML, # comments), restart to apply:
+usage.items_db=lang=zh_cn|zh_tw|en_us (language) | db.type=sqlite|mysql (storage) | db.file=telemetry.db | db.url, db.user, db.password (MySQL)
+usage.items_net=udp.port=9000 (UDP port, 0 disables) | http.port=8080 (HTTP port, 0 disables) | online.timeout=600000 (heartbeat timeout ms)
+usage.client=Client config.conf mapping: telemetry.ip = this server IP; port = udp.port when mode="udp", http.port when mode="http"
+
+# ---- startup / shutdown ----
+main.store_ready=Storage: %s, online timeout: %s s, launch params: %s
+main.ready=XinBot telemetry server is ready, press Ctrl+C to stop
+main.stopping=Shutting down telemetry server...
+main.store_init_failed=Database initialization failed, check storage config: %s
+main.no_listener=Both UDP and HTTP ports are 0, no listener, exiting
+
+# ---- udp / http ----
+udp.started=UDP telemetry service started, listening on 0.0.0.0:%s (all interfaces)
+udp.socket_error=UDP socket error
+udp.recv_error=UDP receive error
+http.started=HTTP service started, listening on 0.0.0.0:%s (all interfaces), dashboard: http://<host-ip>:%s/
+api.error=API handler error
+
+# ---- telemetry pipeline ----
+handler.drop=Dropped undecryptable telemetry packet (from %s): %s
+handler.crash_saved=Saved crash report: %s @%s %s
+handler.crash_save_failed=Failed to persist crash report: %s
+
+# ---- packet decoder ----
+dec.packet_short=Packet too short: %s bytes
+dec.bad_magic=Bad magic, not Xinbot telemetry data
+dec.bad_version=Unsupported protocol version: %s
+dec.unknown_type=Unknown message type: %s
+dec.decrypt_failed=Decryption failed (wrong key or tampered data)
+dec.bad_json=Telemetry payload is not valid JSON
+
+# ---- dashboard page ----
+page.title=XinBot Telemetry Dashboard
+page.sub_load=Loading...
+page.refresh=Refresh
+page.card_online=Online Bots
+page.card_offline=Offline Bots
+page.card_crashed=Crashed
+page.card_logs=Crash Logs Stored
+page.bot_list=Bot List
+page.th_server=Server
+page.th_status=Status
+page.th_state=State
+page.th_players=Players
+page.th_version=Version
+page.th_source=Source IP
+page.th_last=Last Seen
+page.th_uptime=Uptime
+page.recent_crashes=Recent Crash Reports
+page.th_time=Time
+page.th_exception=Exception
+page.empty_bots=No data yet
+page.empty_crashes=No crash records yet
+page.st_online=Online
+page.st_offline=Offline
+page.st_crashed=Crashed
+page.meta_rule=A bot goes offline after no heartbeat for {timeout} minutes; {total} crash reports stored; last refresh {time}
+page.unit_day=d
+page.unit_hour=h
+page.unit_minute=m

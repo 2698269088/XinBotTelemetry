@@ -1,0 +1,35 @@
+# ============ XinBot 遥测服务端配置 ============
+# YAML 格式,UTF-8 编码,支持 # 注释。
+# 首次启动时若当前目录没有本文件,会自动生成一份默认配置;修改后重启服务端生效。
+
+# ---------------- 界面语言 ----------------
+# zh_cn(简体中文,默认)/ zh_tw(繁体中文)/ en_us(英文)
+lang: zh_cn
+
+# ---------------- 监听入口 ----------------
+# 以下端口均监听本机所有网卡(0.0.0.0),设为 0 表示禁用该入口。
+# 客户端 telemetry.mode="udp"(默认)时,遥测数据发送到 udp.port;
+# 客户端 telemetry.mode="http" 时,POST 到 http.port 的 /telemetry 路径。
+udp:
+  port: 9000        # UDP 遥测监听端口
+
+http:
+  port: 8080        # HTTP 服务端口(监控页面 + 接收 HTTP 遥测)
+
+# ---------------- BOT 在线判定 ----------------
+# 距最后一条心跳超过该毫秒数即判定 BOT 离线。
+# 客户端每 5 分钟发一次心跳,默认 600000(10 分钟)相当于连续两周期未见才离线。
+online:
+  timeout: 600000
+
+# ---------------- 存储 ----------------
+# 崩溃日志存储类型:sqlite(默认)或 mysql
+db:
+  type: sqlite
+  # SQLite 数据库文件(相对工作目录或绝对路径)
+  file: telemetry.db
+  # MySQL 连接信息(仅在 db.type 为 mysql 时使用)
+  # createDatabaseIfNotExist=true 表示数据库不存在时自动创建(账号需有建库权限)
+  url: "jdbc:mysql://127.0.0.1:3306/xinbot_telemetry?createDatabaseIfNotExist=true"
+  user: root
+  password: ""

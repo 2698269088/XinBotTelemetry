@@ -1,0 +1,77 @@
+# Xinbot 遙測伺服端語言檔:繁體中文
+# 格式與 Xinbot 核心 .lang 一致:key=value、# 註解、UTF-8 編碼。
+
+bot.unknown_server=(未連線)
+
+# ---- 設定 ----
+config.bad_arg=無法辨識的參數(僅支援 --help 與 --config=路徑): %s
+config.generated=找不到設定檔,已產生預設設定檔 %s,修改後請重新啟動生效
+config.load_failed=設定載入失敗: %s
+config.db_type_invalid=db.type 僅支援 sqlite 或 mysql,目前: %s
+config.lang_invalid=lang 僅支援 zh_cn、zh_tw 或 en_us,目前: %s
+config.port_negative=udp.port / http.port 不能為負數(0 表示停用)
+config.bad_number=%s 不是合法整數: %s
+
+usage.main=用法: java -jar XinBotTelemetry.jar [--config=設定檔路徑]
+usage.opt=--config=路徑   指定設定檔(預設 ./config.yml,首次啟動自動產生)
+usage.note=所有設定項均透過設定檔設定(UTF-8 YAML,支援 # 註解),修改後重新啟動生效:
+usage.items_db=lang=zh_cn|zh_tw|en_us(語言) | db.type=sqlite|mysql(儲存類型) | db.file=telemetry.db | db.url、db.user、db.password(MySQL)
+usage.items_net=udp.port=9000(UDP 埠,0 停用) | http.port=8080(HTTP 埠,0 停用) | online.timeout=600000(心跳逾時毫秒)
+usage.client=客戶端 config.conf 對應設定:telemetry.ip 填本伺服端 IP;mode="udp" 時 port 用 udp.port,mode="http" 時 port 用 http.port
+
+# ---- 啟動與停止 ----
+main.store_ready=儲存類型: %s,線上逾時: %s 秒,啟動參數: %s
+main.ready=XinBot 遙測伺服端已就緒,按 Ctrl+C 停止
+main.stopping=正在停止遙測伺服端...
+main.store_init_failed=資料庫初始化失敗,請檢查儲存設定: %s
+main.no_listener=UDP 與 HTTP 埠皆為 0,沒有任何監聽入口,退出
+
+# ---- UDP / HTTP ----
+udp.started=UDP 遙測服務已啟動,監聽 0.0.0.0:%s(所有網卡)
+udp.socket_error=UDP 通訊端異常
+udp.recv_error=UDP 接收處理異常
+http.started=HTTP 服務已啟動,監聽 0.0.0.0:%s(所有網卡),監控頁面: http://<本機IP>:%s/
+api.error=API 處理失敗
+
+# ---- 遙測處理 ----
+handler.drop=捨棄無法解密的遙測資料(來自 %s): %s
+handler.crash_saved=已儲存崩潰日誌: %s @%s %s
+handler.crash_save_failed=崩潰日誌入庫失敗: %s
+
+# ---- 協定解碼 ----
+dec.packet_short=資料包過短: %s 位元組
+dec.bad_magic=魔數不符,非 Xinbot 遙測資料
+dec.bad_version=不支援的協定版本: %s
+dec.unknown_type=未知訊息類型: %s
+dec.decrypt_failed=解密失敗(金鑰不符或資料遭竄改)
+dec.bad_json=遙測負載不是合法的 JSON
+
+# ---- 監控頁面 ----
+page.title=XinBot 遙測監控
+page.sub_load=載入中...
+page.refresh=重新整理
+page.card_online=線上 BOT
+page.card_offline=離線 BOT
+page.card_crashed=已崩潰
+page.card_logs=累計崩潰日誌
+page.bot_list=BOT 清單
+page.th_server=伺服器
+page.th_status=狀態
+page.th_state=階段
+page.th_players=玩家
+page.th_version=版本
+page.th_source=來源 IP
+page.th_last=最後心跳
+page.th_uptime=運行時間
+page.recent_crashes=最近崩潰日誌
+page.th_time=時間
+page.th_exception=異常
+page.empty_bots=暫無資料
+page.empty_crashes=暫無崩潰紀錄
+page.st_online=線上
+page.st_offline=離線
+page.st_crashed=已崩潰
+page.meta_rule=線上判定:心跳超過 {timeout} 分鐘未見即離線,累計 {total} 條崩潰已入庫,最後更新 {time}
+page.unit_day=天
+page.unit_hour=小時
+page.unit_minute=分
