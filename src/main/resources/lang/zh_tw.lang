@@ -2,6 +2,7 @@
 # 格式與 Xinbot 核心 .lang 一致:key=value、# 註解、UTF-8 編碼。
 
 bot.unknown_server=(未連線)
+bot.unknown_name=(未知)
 
 # ---- 設定 ----
 config.bad_arg=無法辨識的參數(僅支援 --help 與 --config=路徑): %s
@@ -20,6 +21,12 @@ usage.items_net=udp.port=9000(UDP 埠,0 停用) | http.port=8080(HTTP 埠,0 停�
 usage.client=客戶端 config.conf 對應設定:telemetry.ip 填本伺服端 IP;mode="udp" 時 port 用 udp.port,mode="http" 時 port 用 http.port
 
 # ---- 啟動與停止 ----
+main.key.from_config=使用 config.yml 中的 key 作為遙測加密金鑰
+main.key.config_invalid=config.yml 中的 key 無效(應為 Base64 編碼的 32 位元組): %s
+main.key.file_loaded=已從 %s 載入遙測加密金鑰
+main.key.file_generated=未設定 key,已產生新的遙測金鑰並儲存到 %s(內容: %s)。用戶端 config.conf 的 telemetry.key 可填入該值,也可留空自動取得(明文交換,僅建議可信網路);請妥善保存本檔案
+main.key.file_invalid=遙測金鑰檔 %s 內容無效(應為 Base64 編碼的 32 位元組): %s
+main.key.file_failed=讀取或寫入遙測金鑰檔 %s 失敗: %s
 main.store_ready=儲存類型: %s,線上逾時: %s 秒,啟動參數: %s
 main.ready=XinBot 遙測伺服端已就緒,按 Ctrl+C 停止
 main.stopping=正在停止遙測伺服端...
@@ -37,6 +44,7 @@ api.error=API 處理失敗
 handler.drop=捨棄無法解密的遙測資料(來自 %s): %s
 handler.crash_saved=已儲存崩潰日誌: %s @%s %s
 handler.crash_save_failed=崩潰日誌入庫失敗: %s
+handler.key_requested=用戶端 %s 要求取得遙測金鑰(明文交換,建議僅在可信網路啟用)
 
 # ---- 協定解碼 ----
 dec.packet_short=資料包過短: %s 位元組
@@ -45,6 +53,7 @@ dec.bad_version=不支援的協定版本: %s
 dec.unknown_type=未知訊息類型: %s
 dec.decrypt_failed=解密失敗(金鑰不符或資料遭竄改)
 dec.bad_json=遙測負載不是合法的 JSON
+dec.type_mismatch=信封訊息類型(%s)與負載 JSON 的 type 欄位(%s)不一致
 
 # ---- 監控頁面 ----
 page.title=XinBot 遙測監控

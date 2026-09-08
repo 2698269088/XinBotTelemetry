@@ -2,6 +2,7 @@
 # Format matches Xinbot core .lang files: key=value, '#' comments, UTF-8.
 
 bot.unknown_server=(not connected)
+bot.unknown_name=(unknown)
 
 # ---- config ----
 config.bad_arg=Unrecognized argument (only --help and --config=PATH are supported): %s
@@ -20,6 +21,12 @@ usage.items_net=udp.port=9000 (UDP port, 0 disables) | http.port=8080 (HTTP port
 usage.client=Client config.conf mapping: telemetry.ip = this server IP; port = udp.port when mode="udp", http.port when mode="http"
 
 # ---- startup / shutdown ----
+main.key.from_config=Using the key from config.yml as the telemetry encryption key
+main.key.config_invalid=The key in config.yml is invalid (expected Base64 of 32 bytes): %s
+main.key.file_loaded=Loaded telemetry encryption key from %s
+main.key.file_generated=No key configured, generated a new telemetry key saved to %s (value: %s). Clients may set config.conf telemetry.key to this value or leave it empty to fetch it automatically (plaintext exchange, trusted networks only); keep this file safe
+main.key.file_invalid=Telemetry key file %s is invalid (expected Base64 of 32 bytes): %s
+main.key.file_failed=Failed to read or write telemetry key file %s: %s
 main.store_ready=Storage: %s, online timeout: %s s, launch params: %s
 main.ready=XinBot telemetry server is ready, press Ctrl+C to stop
 main.stopping=Shutting down telemetry server...
@@ -37,6 +44,7 @@ api.error=API handler error
 handler.drop=Dropped undecryptable telemetry packet (from %s): %s
 handler.crash_saved=Saved crash report: %s @%s %s
 handler.crash_save_failed=Failed to persist crash report: %s
+handler.key_requested=Telemetry key disclosed to %s on request (plaintext exchange, only on trusted networks)
 
 # ---- packet decoder ----
 dec.packet_short=Packet too short: %s bytes
@@ -45,6 +53,7 @@ dec.bad_version=Unsupported protocol version: %s
 dec.unknown_type=Unknown message type: %s
 dec.decrypt_failed=Decryption failed (wrong key or tampered data)
 dec.bad_json=Telemetry payload is not valid JSON
+dec.type_mismatch=Envelope message type (%s) does not match the JSON payload type (%s)
 
 # ---- dashboard page ----
 page.title=XinBot Telemetry Dashboard

@@ -28,6 +28,7 @@ import java.util.logging.Logger;
  *   GET  /api/stats    在线统计 JSON
  *   GET  /api/bots     全部 BOT 状态 JSON
  *   GET  /api/crashes  最近崩溃日志 JSON(?limit=N)
+ *   GET  /telemetry/key 弱化模式:向客户端明文下发部署密钥(见 PacketDecoder 类注释)
  *   POST /telemetry    接收 HTTP 模式的遥测信封(与 UDP 相同二进制格式)
  */
 public class WebServer implements AutoCloseable {
@@ -51,14 +52,18 @@ public class WebServer implements AutoCloseable {
     private final BotRegistry registry;
     private final CrashStore store;
     private final TelemetryHandler telemetryHandler;
+    /** Base64 编码的部署密钥,弱化模式下经 GET /telemetry/key 明文下发给客户端 */
+    private final String telemetryKeyText;
     private HttpServer server;
     private String pageHtml;
 
-    public WebServer(int port, BotRegistry registry, CrashStore store, TelemetryHandler telemetryHandler) {
+    public WebServer(int port, BotRegistry registry, CrashStore store,
+                     TelemetryHandler telemetryHandler, String telemetryKeyText) {
         this.port = port;
         this.registry = registry;
         this.store = store;
         this.telemetryHandler = telemetryHandler;
+        this.telemetryKeyText = telemetryKeyText;
     }
 
     public void start() throws IOException {
@@ -68,6 +73,7 @@ public class WebServer implements AutoCloseable {
         server.createContext("/api/stats", this::handleStats);
         server.createContext("/api/bots", this::handleBots);
         server.createContext("/api/crashes", this::handleCrashes);
+        server.createContext("/telemetry/key", this::handleTelemetryKey);
         server.createContext("/telemetry", this::handleTelemetry);
         server.setExecutor(Executors.newFixedThreadPool(8, runnable -> {
             Thread thread = new Thread(runnable, "http-worker");
@@ -200,6 +206,15 @@ public class WebServer implements AutoCloseable {
                 ? "?" : exchange.getRemoteAddress().getAddress().getHostAddress();
         telemetryHandler.handleEnvelope(envelope, sourceIp);
         respond(exchange, 200, "text/plain", "ok");
+    }
+
+    /** 弱化模式:客户端 mode="http" 且 telemetry.key 留空时,从此端点自动获取部署密钥(明文) */
+    private void handleTelemetryKey(HttpExchange exchange) throws IOException {
+        if (!"GET".equals(exchange.getRequestMethod())) {
+            respond(exchange, 405, "text/plain", "Method Not Allowed");
+            return;
+        }
+        respond(exchange, 200, "text/plain; charset=utf-8", telemetryKeyText);
     }
 
     // ---------- 输出工具 ----------

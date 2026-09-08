@@ -14,7 +14,16 @@ udp:
   port: 9000        # UDP 遥测监听端口
 
 http:
-  port: 8080        # HTTP 服务端口(监控页面 + 接收 HTTP 遥测)
+  port: 8080        # HTTP 服务端口(监控页面 + POST /telemetry + GET /telemetry/key 密钥下发)
+
+# ---------------- 遥测加密 ----------------
+# 传输加密密钥(AES-256-GCM):Base64 编码的 32 字节随机值。
+# 客户端 config.conf 的 telemetry.key 与本处一致时按显式密钥发送;
+# 客户端 key 留空则会经 UDP 密钥请求/应答或 HTTP GET /telemetry/key 自动获取本密钥
+# (明文交换,仅建议在可信网络使用)。密钥不符的数据包会被拒绝。
+# 生成方式: openssl rand -base64 32
+# 留空时服务端首次启动会自动生成 telemetry.key 文件(打印一次密钥到控制台),重启复用。
+key: ""
 
 # ---------------- BOT 在线判定 ----------------
 # 距最后一条心跳超过该毫秒数即判定 BOT 离线。

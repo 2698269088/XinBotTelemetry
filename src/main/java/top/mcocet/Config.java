@@ -44,6 +44,8 @@ public class Config {
     public int httpPort = 8080;
     /** 心跳超时毫秒数,超过即判定 BOT 离线 */
     public long onlineTimeoutMs = DEFAULT_ONLINE_TIMEOUT;
+    /** 遥测加密密钥:Base64 编码的 32 字节随机值(AES-256),留空则使用/生成 telemetry.key 文件 */
+    public String telemetryKey = "";
     /** 实际使用的配置文件路径 */
     public String configFile = DEFAULT_CONFIG_NAME;
     public boolean help = false;
@@ -118,6 +120,8 @@ public class Config {
         mysqlUrl = text(db, "url", mysqlUrl);
         mysqlUser = text(db, "user", mysqlUser);
         mysqlPassword = text(db, "password", mysqlPassword);
+
+        telemetryKey = text(root, "key", telemetryKey);
 
         udpPort = intValue(root.path("udp"), "port", udpPort);
         httpPort = intValue(root.path("http"), "port", httpPort);

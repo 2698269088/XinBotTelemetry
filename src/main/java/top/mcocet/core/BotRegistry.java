@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * BOT 在线状态注册表:以 "bot名@服务器" 为 key 维护每个 BOT 的最新状态。
+ * 客户端可配置不发送 bot 名/服务器地址(隐私开关),此时包不会丢失:
+ * bot 名缺失的匿名客户端按来源 IP 登记并以占位名展示。
  * 在线判定:收到过心跳且距最后心跳未超过在线超时,且未收到过崩溃报告。
  */
 public class BotRegistry {
@@ -28,14 +30,12 @@ public class BotRegistry {
 
     /** 心跳到达:登记或刷新 BOT */
     public BotStatus onHeartbeat(JsonNode hb, String sourceIp, long now) {
-        String name = text(hb, "bot");
-        if (name == null || name.isBlank()) {
-            return null;
-        }
+        Identity id = Identity.from(text(hb, "bot"), sourceIp);
         String server = text(hb, "server");
         BotStatus status = bots.computeIfAbsent(
-                key(name, server),
-                k -> new BotStatus(name, server == null ? BotStatus.UNKNOWN_SERVER : server, sourceIp, now)
+                key(id.keyPart(), server),
+                k -> new BotStatus(id.display(), server == null ? BotStatus.UNKNOWN_SERVER : server,
+                        sourceIp, now)
         );
         status.onHeartbeat(hb, sourceIp, now);
         return status;
@@ -43,14 +43,12 @@ public class BotRegistry {
 
     /** 崩溃报告到达:登记或标记 BOT 崩溃 */
     public BotStatus onCrash(JsonNode crash, String sourceIp, long now) {
-        String name = text(crash, "bot");
-        if (name == null || name.isBlank()) {
-            return null;
-        }
+        Identity id = Identity.from(text(crash, "bot"), sourceIp);
         String server = text(crash, "server");
         BotStatus status = bots.computeIfAbsent(
-                key(name, server),
-                k -> new BotStatus(name, server == null ? BotStatus.UNKNOWN_SERVER : server, sourceIp, now)
+                key(id.keyPart(), server),
+                k -> new BotStatus(id.display(), server == null ? BotStatus.UNKNOWN_SERVER : server,
+                        sourceIp, now)
         );
         status.onCrash(crash, sourceIp, now);
         return status;
@@ -91,6 +89,20 @@ public class BotRegistry {
 
     private static String key(String name, String server) {
         return name + "@" + (server == null ? BotStatus.UNKNOWN_SERVER : server);
+    }
+
+    /**
+     * 上报身份:客户端按隐私开关裁剪掉 bot 名时,面板无法再按名称归并,
+     * 此时以来源 IP 作为注册表键并匿名展示,保证在线/崩溃状态仍可追踪。
+     */
+    private record Identity(String display, String keyPart) {
+        static Identity from(String bot, String sourceIp) {
+            if (bot != null && !bot.isBlank()) {
+                return new Identity(bot, bot);
+            }
+            String fallback = (sourceIp == null || sourceIp.isBlank()) ? "unknown" : sourceIp;
+            return new Identity(BotStatus.UNKNOWN_NAME, fallback);
+        }
     }
 
     private static String text(JsonNode node, String key) {

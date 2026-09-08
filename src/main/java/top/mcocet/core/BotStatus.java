@@ -12,6 +12,9 @@ public class BotStatus {
     /** server 字段缺失时展示的占位文案,随界面语言 */
     public static final String UNKNOWN_SERVER = I18n.get("bot.unknown_server");
 
+    /** bot 名缺失(客户端按隐私开关裁剪)时展示的占位文案,随界面语言 */
+    public static final String UNKNOWN_NAME = I18n.get("bot.unknown_name");
+
     private final String name;
     private final String server;
     private final long firstSeenMs;

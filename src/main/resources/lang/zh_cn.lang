@@ -2,6 +2,7 @@
 # 格式与 Xinbot 核心 .lang 一致:key=value,# 注释,UTF-8 编码。
 
 bot.unknown_server=(未连接)
+bot.unknown_name=(未知)
 
 # ---- 配置 ----
 config.bad_arg=无法识别的参数(仅支持 --help 与 --config=路径): %s
@@ -20,6 +21,12 @@ usage.items_net=udp.port=9000(UDP 端口,0 禁用) | http.port=8080(HTTP 端口,
 usage.client=客户端 config.conf 对应配置:telemetry.ip 填本服务端 IP;mode="udp" 时 port 用 udp.port,mode="http" 时 port 用 http.port
 
 # ---- 启动与停机 ----
+main.key.from_config=使用 config.yml 中的 key 作为遥测加密密钥
+main.key.config_invalid=config.yml 中的 key 无效(应为 Base64 编码的 32 字节): %s
+main.key.file_loaded=已从 %s 加载遥测加密密钥
+main.key.file_generated=未配置 key,已生成新的遥测密钥并保存到 %s(内容: %s)。客户端 config.conf 的 telemetry.key 可填该值,也可留空自动获取(明文交换,仅建议可信网络);请妥善保存本文件
+main.key.file_invalid=遥测密钥文件 %s 内容无效(应为 Base64 编码的 32 字节): %s
+main.key.file_failed=读取或写入遥测密钥文件 %s 失败: %s
 main.store_ready=存储类型: %s,在线超时: %s 秒,启动参数: %s
 main.ready=XinBot 遥测服务端已就绪,按 Ctrl+C 停止
 main.stopping=正在停止遥测服务端...
@@ -37,6 +44,7 @@ api.error=API 处理失败
 handler.drop=丢弃无法解密的遥测数据(来自 %s): %s
 handler.crash_saved=已保存崩溃日志: %s @%s %s
 handler.crash_save_failed=崩溃日志入库失败: %s
+handler.key_requested=客户端 %s 请求获取遥测密钥(明文交换,建议仅在可信网络启用)
 
 # ---- 协议解码 ----
 dec.packet_short=数据包过短: %s 字节
@@ -45,6 +53,7 @@ dec.bad_version=不支持的协议版本: %s
 dec.unknown_type=未知消息类型: %s
 dec.decrypt_failed=解密失败(密钥不符或数据被篡改)
 dec.bad_json=遥测负载不是合法 JSON
+dec.type_mismatch=信封消息类型(%s)与负载 JSON 的 type 字段(%s)不一致
 
 # ---- 监控页面 ----
 page.title=XinBot 遥测监控

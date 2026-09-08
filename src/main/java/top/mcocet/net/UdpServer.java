@@ -48,7 +48,11 @@ public class UdpServer implements AutoCloseable {
                 byte[] data = new byte[packet.getLength()];
                 System.arraycopy(packet.getData(), packet.getOffset(), data, 0, packet.getLength());
                 String sourceIp = packet.getAddress() == null ? "?" : packet.getAddress().getHostAddress();
-                handler.handleEnvelope(data, sourceIp);
+                byte[] reply = handler.handleDatagram(data, sourceIp);
+                if (reply != null) {
+                    // 明文密钥请求的应答回送给来源地址(客户端临时端口)
+                    socket.send(new DatagramPacket(reply, reply.length, packet.getSocketAddress()));
+                }
             } catch (java.net.SocketException e) {
                 if (running) {
                     log.log(Level.WARNING, I18n.get("udp.socket_error"), e);
