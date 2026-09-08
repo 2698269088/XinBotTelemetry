@@ -25,12 +25,23 @@ English version: [README.md](README.md)
 
 - Java 17 或更高版本
 
-## 构建与运行
+## 下载
+
+每个 [GitHub Release](https://github.com/2698269088/XinBotTelemetry/releases) 都附带预构建 jar。
+`XinBotTelemetry-1.0.1.jar` 为自包含可执行包(全部依赖已打入):放入任意目录,可在旁边放一份
+`config.yml`,然后运行:
 
 ```bash
-mvn package                      # 产出 target/XinBotTelemetry.jar
-java -jar target/XinBotTelemetry.jar
-java -jar target/XinBotTelemetry.jar --config=/path/to/config.yml
+java -jar XinBotTelemetry-1.0.1.jar
+java -jar XinBotTelemetry-1.0.1.jar --config=/path/to/config.yml
+```
+
+## 从源码构建与运行
+
+```bash
+mvn package                      # 产出 target/XinBotTelemetry-1.0.1.jar
+java -jar target/XinBotTelemetry-1.0.1.jar
+java -jar target/XinBotTelemetry-1.0.1.jar --config=/path/to/config.yml
 ```
 
 首次启动时若 jar 同目录下没有 **`config.yml`**,会自动生成一份默认配置;修改后重启生效。

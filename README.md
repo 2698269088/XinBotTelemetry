@@ -30,12 +30,23 @@ to SQLite or MySQL.
 
 - Java 17 or newer
 
-## Build & Run
+## Download
+
+Pre-built jars are attached to each [GitHub Release](https://github.com/2698269088/XinBotTelemetry/releases).
+`XinBotTelemetry-1.0.1.jar` is self-contained (all dependencies shaded in): put it in a folder,
+optionally drop a `config.yml` beside it, then run:
 
 ```bash
-mvn package                      # produces target/XinBotTelemetry.jar
-java -jar target/XinBotTelemetry.jar
-java -jar target/XinBotTelemetry.jar --config=/path/to/config.yml
+java -jar XinBotTelemetry-1.0.1.jar
+java -jar XinBotTelemetry-1.0.1.jar --config=/path/to/config.yml
+```
+
+## Build & Run (from source)
+
+```bash
+mvn package                      # produces target/XinBotTelemetry-1.0.1.jar
+java -jar target/XinBotTelemetry-1.0.1.jar
+java -jar target/XinBotTelemetry-1.0.1.jar --config=/path/to/config.yml
 ```
 
 On the first start the server writes a default **`config.yml`** next to the jar if it does not
