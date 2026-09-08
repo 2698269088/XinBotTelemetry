@@ -1,6 +1,6 @@
 # XinBotTelemetry
 
-[Xinbot](https://github.com/xinbote/xinbot) Minecraft 机器人客户端的**遥测服务端**。
+[Xinbot](https://github.com/huangdihd/xinbot) Minecraft 机器人客户端的**遥测服务端**。
 它通过 UDP 或 HTTP 接收来自 Xinbot 客户端的**加密心跳与崩溃报告**,在自带的网页监控页面上
 展示**哪些 BOT 在线**,并将**崩溃日志持久化**到 SQLite 或 MySQL。
 
@@ -151,5 +151,5 @@ src/test/java/.../PacketDecoderTest.java
 ## 说明
 
 - 本项目属于 Xinbot 生态;传输协议与 `.lang` 约定与
-  [Xinbot](https://github.com/xinbote/xinbot) 核心项目保持一致。
+  [Xinbot](https://github.com/huangdihd/xinbot) 核心项目保持一致。
 - 超过 7 天未上报的 BOT 记录会从内存注册表中自动清理,防止内存膨胀。

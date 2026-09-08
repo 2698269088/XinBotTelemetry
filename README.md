@@ -1,6 +1,6 @@
 # XinBotTelemetry
 
-Telemetry server for the [Xinbot](https://github.com/xinbote/xinbot) Minecraft bot client.
+Telemetry server for the [Xinbot](https://github.com/huangdihd/xinbot) Minecraft bot client.
 It receives **encrypted heartbeat and crash-report packets** from Xinbot clients (over UDP or
 HTTP), shows **which bots are online** on a built-in web dashboard, and **persists crash reports**
 to SQLite or MySQL.
@@ -161,6 +161,6 @@ src/test/java/.../PacketDecoderTest.java
 ## Notes
 
 - This project is part of the Xinbot ecosystem; the wire format and the `.lang` convention are
-  shared with the [Xinbot](https://github.com/xinbote/xinbot) core project.
+  shared with the [Xinbot](https://github.com/huangdihd/xinbot) core project.
 - Records that have not reported for more than 7 days are purged from the in-memory registry
   automatically.
